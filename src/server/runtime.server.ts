@@ -2,7 +2,7 @@ import { Flamework } from "@flamework/core";
 import TestEZ from "@rbxts/testez";
 import { RunService } from "@rbxts/services";
 
-Flamework.addPaths("src/server/actions");
+Flamework.addPaths("src/server/services");
 
 Flamework.ignite();
 

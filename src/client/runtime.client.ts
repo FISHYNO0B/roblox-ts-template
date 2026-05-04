@@ -3,6 +3,6 @@ import { CmdrClient } from "@rbxts/cmdr";
 
 CmdrClient.SetActivationKeys([Enum.KeyCode.F2]);
 
-Flamework.addPaths("src/client/pages");
+Flamework.addPaths("src/client/controllers");
 
 Flamework.ignite();

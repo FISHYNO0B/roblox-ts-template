@@ -176,35 +176,34 @@ roblox-ts-template/
 
 ```
 client/
-├── runtime.client.ts   ← Entry point on the client. Starts Flamework + Cmdr.
-├── infra/              ← Plumbing (no game logic): network, store setup
+├── runtime.client.ts        ← Entry point on the client. Starts Flamework + Cmdr.
+├── infra/                   ← Plumbing (no game logic): network, store setup
 │   ├── network.ts
-│   └── store/          ← Client-side Reflex store + receiver middleware
-├── pages/              ← Flamework Controllers (one creates the React root)
-│   └── App.tsx         ← Mounts the React tree under PlayerGui
-├── app/holder/         ← The "Holder" UI — a router that switches pages
-│   └── holder-app.tsx
-└── system-ui/          ← All UI building blocks
-    ├── components/     ← Generic primitives (Frame, TextButton, …)
-    ├── apps/           ← Concrete UI features (currency, settings, buttons)
-    ├── *.story.tsx     ← UI Labs stories (preview without running game)
-    └── ui.storybook.ts
+│   └── store/               ← Client-side Reflex store + receiver middleware
+├── controllers/             ← Flamework Controllers (auto-discovered)
+│   └── App.controller.tsx   ← Mounts the React tree under PlayerGui
+└── ui/                      ← All UI building blocks
+    ├── primitives/          ← Generic primitives (Frame, TextButton, …)
+    ├── features/            ← Concrete UI features (currency, settings, buttons)
+    ├── shell/               ← Top-level shell — HolderApp router
+    ├── stories/             ← UI Labs stories (*.story.tsx + ui.storybook.ts)
+    └── utils/
 ```
 
 ### Inside `src/server/`
 
 ```
 server/
-├── runtime.server.ts   ← Entry point on the server. Starts Flamework + tests.
-├── infra/              ← Plumbing: network, store, broadcaster middleware
-└── actions/            ← Flamework Services — the actual server logic
-    ├── PlayerDataService.ts   ← Loads/saves player profiles, leaderstats
-    ├── SettingsService.ts     ← Handles "toggleSetting" requests
-    └── cmdr/                  ← Cmdr commands and types
-        ├── startup.server.ts
-        ├── commands/
-        └── types/
-└── test/               ← TestEZ specs (*.spec.ts)
+├── runtime.server.ts        ← Entry point on the server. Starts Flamework + tests.
+├── infra/                   ← Plumbing: network, store, broadcaster middleware
+├── services/                ← Flamework Services — the actual server logic
+│   ├── PlayerDataService.ts ← Loads/saves player profiles, leaderstats
+│   └── SettingsService.ts   ← Handles "toggleSetting" requests
+├── cmdr/                    ← Cmdr commands and types
+│   ├── startup.server.ts
+│   ├── commands/
+│   └── types/
+└── tests/                   ← TestEZ specs (*.spec.ts)
 ```
 
 ### Inside `src/shared/`
@@ -233,7 +232,7 @@ shared/
 ### Server: [src/server/runtime.server.ts](src/server/runtime.server.ts)
 
 ```ts
-Flamework.addPaths("src/server/actions");
+Flamework.addPaths("src/server/services");
 Flamework.ignite();
 
 if (RunService.IsStudio()) {
@@ -242,7 +241,7 @@ if (RunService.IsStudio()) {
 ```
 
 What's happening:
-1. `addPaths("src/server/actions")` — tells Flamework "look in this folder for `@Service` classes."
+1. `addPaths("src/server/services")` — tells Flamework "look in this folder for `@Service` classes."
 2. `Flamework.ignite()` — instantiates every service, calls their lifecycle hooks (`onInit`, `onStart`).
 3. In Studio only, run all `.spec.ts` files using TestEZ.
 
@@ -250,12 +249,12 @@ What's happening:
 
 ```ts
 CmdrClient.SetActivationKeys([Enum.KeyCode.F2]);
-Flamework.addPaths("src/client/pages");
+Flamework.addPaths("src/client/controllers");
 Flamework.ignite();
 ```
 
 1. F2 will toggle the Cmdr console.
-2. Look in `src/client/pages` for `@Controller` classes (the `App` controller mounts the React tree).
+2. Look in `src/client/controllers` for `@Controller` classes (the `App` controller mounts the React tree).
 3. Start them all.
 
 > **Why `.client.ts` / `.server.ts`?** roblox-ts uses these suffixes to mark scripts as LocalScripts vs Scripts in Roblox.
@@ -286,7 +285,7 @@ export class GreetingService implements OnStart {
 }
 ```
 
-Save this file under `src/server/actions/`. Flamework will discover it automatically — you don't need to register it anywhere.
+Save this file under `src/server/services/`. Flamework will discover it automatically — you don't need to register it anywhere.
 
 ### Dependency Injection
 
@@ -305,7 +304,7 @@ export class ShopService implements OnStart {
 
 Flamework finds `PlayerDataService` and gives it to you. No `new`, no singletons to manage.
 
-The same pattern works on the client with `@Controller`. See [src/client/pages/App.tsx](src/client/pages/App.tsx).
+The same pattern works on the client with `@Controller`. See [src/client/controllers/App.controller.tsx](src/client/controllers/App.controller.tsx).
 
 ---
 
@@ -367,7 +366,7 @@ In server code you use `store.subscribe(selector, callback)` — see how `Player
 
 Roblox DataStores are tricky (rate limits, double-loading, partial writes). **ProfileService** is the gold-standard wrapper that handles all the gotchas.
 
-[src/server/actions/PlayerDataService.ts](src/server/actions/PlayerDataService.ts) does this:
+[src/server/services/PlayerDataService.ts](src/server/services/PlayerDataService.ts) does this:
 
 1. When a player joins, `LoadProfileAsync` fetches their save (or creates a default).
 2. `Reconcile()` adds any new fields you've added to `defaultPlayerData` since they last played.
@@ -387,7 +386,7 @@ In Roblox-TS, React renders into actual Roblox `Instance`s (Frames, TextLabels, 
 
 ### The mounting point
 
-[src/client/pages/App.tsx](src/client/pages/App.tsx):
+[src/client/controllers/App.controller.tsx](src/client/controllers/App.controller.tsx):
 
 ```tsx
 @Controller({})
@@ -423,7 +422,7 @@ You'll see both:
 // JSX intrinsic — directly maps to a Roblox class (lowercase)
 <frame Size={new UDim2(1, 0, 1, 0)} BackgroundColor3={...} />
 
-// Custom component — defined in src/client/system-ui/components
+// Custom component — defined in src/client/ui/primitives
 <Frame size={new UDim2(1, 0, 1, 0)} backgroundTransparency={1} />
 ```
 
@@ -437,7 +436,7 @@ Custom components (`Frame`, `TextButton`, `TextLabel`, …) are wrappers that pr
 
 ### UI Labs (preview without running the game)
 
-Files ending in `.story.tsx` define previews. With the **UI Labs** Studio plugin connected to Rojo, you can browse and live-edit each story. See [src/client/system-ui/holder.story.tsx](src/client/system-ui/holder.story.tsx) for a working example.
+Files ending in `.story.tsx` define previews. With the **UI Labs** Studio plugin connected to Rojo, you can browse and live-edit each story. See [src/client/ui/stories/holder.story.tsx](src/client/ui/stories/holder.story.tsx) for a working example.
 
 ---
 
@@ -490,14 +489,14 @@ Cmdr is an admin/debug console. Press **F2** in Studio.
 
 A Cmdr command is in **two files**:
 
-1. The **definition** ([giveCurrency.ts](src/server/actions/cmdr/commands/giveCurrency.ts)) — describes name, args, types.
-2. The **implementation** ([giveCurrencyServer.ts](src/server/actions/cmdr/commands/giveCurrencyServer.ts)) — runs the command.
+1. The **definition** ([giveCurrency.ts](src/server/cmdr/commands/giveCurrency.ts)) — describes name, args, types.
+2. The **implementation** ([giveCurrencyServer.ts](src/server/cmdr/commands/giveCurrencyServer.ts)) — runs the command.
 
-The bootstrap that registers everything: [src/server/actions/cmdr/startup.server.ts](src/server/actions/cmdr/startup.server.ts).
+The bootstrap that registers everything: [src/server/cmdr/startup.server.ts](src/server/cmdr/startup.server.ts).
 
 ### Custom argument types
 
-If your command needs a custom enum (like the `Currency` type — Coins/Gems), define it in [src/server/actions/cmdr/types/currency.ts](src/server/actions/cmdr/types/currency.ts) and Cmdr will give you autocomplete.
+If your command needs a custom enum (like the `Currency` type — Coins/Gems), define it in [src/server/cmdr/types/currency.ts](src/server/cmdr/types/currency.ts) and Cmdr will give you autocomplete.
 
 ### Try it
 ```
@@ -523,7 +522,7 @@ return () => {
 };
 ```
 
-See [src/server/test/player/balance.spec.ts](src/server/test/player/balance.spec.ts) for a real example.
+See [src/server/tests/player/balance.spec.ts](src/server/tests/player/balance.spec.ts) for a real example.
 
 Install the **TestEZ Companion** VS Code extension to run tests with one click without launching the game.
 
@@ -559,14 +558,14 @@ Way more useful than a bare `print()` when you have many logs.
 
 ### …add a new UI page?
 
-1. Create a folder in `src/client/system-ui/apps/<your-app>/`.
+1. Create a folder in `src/client/ui/features/<your-app>/`.
 2. Make `<your-app>.tsx` exporting a React component.
 3. Render it from `HolderApp` (or from `App.tsx` directly).
 4. (Optional) Add a `.story.tsx` next to it for UI Labs preview.
 
 ### …add a new server-side feature?
 
-1. Create `src/server/actions/MyFeatureService.ts`:
+1. Create `src/server/services/MyFeatureService.ts`:
    ```ts
    @Service({})
    export class MyFeatureService implements OnStart {
