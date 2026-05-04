@@ -23,13 +23,12 @@ interface Props extends React.PropsWithChildren {
 }
 
 export default function TextButton(props: Props) {
-	let automaticSize = props.automaticSize;
-	automaticSize ??= props.size ? Enum.AutomaticSize.None : Enum.AutomaticSize.XY;
+	const automaticSize = props.automaticSize ?? (props.size ? Enum.AutomaticSize.None : Enum.AutomaticSize.XY);
 
 	return (
 		<textbutton
 			key={props.key ?? props.text}
-			AutomaticSize={props.automaticSize}
+			AutomaticSize={automaticSize}
 			Position={props.position ?? new UDim2(0.5, 0, 0.5, 0)}
 			AnchorPoint={props.anchorPoint ?? new Vector2(0.5, 0.5)}
 			Size={props.size}

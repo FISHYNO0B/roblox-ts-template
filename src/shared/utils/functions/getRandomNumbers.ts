@@ -1,14 +1,17 @@
+const random = new Random();
+
 export function getRandomNumbers(min: number, max: number, amount = 1) {
-	math.randomseed(tick());
+	const range = max - min + 1;
+	if (amount > range) {
+		error(`getRandomNumbers: cannot pick ${amount} unique numbers from range [${min}, ${max}]`);
+	}
 
 	const numbers = new Array<number>();
-	for (let i = 0; i < amount; i++) {
-		const num = math.floor(math.random() * max) + min;
-		if (numbers.includes(num)) {
-			i--;
-			continue;
+	while (numbers.size() < amount) {
+		const num = random.NextInteger(min, max);
+		if (!numbers.includes(num)) {
+			numbers.push(num);
 		}
-		numbers.push(num);
 	}
 
 	return numbers;

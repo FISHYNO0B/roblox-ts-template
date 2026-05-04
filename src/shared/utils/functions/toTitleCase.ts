@@ -3,11 +3,11 @@ export function toTitleCase(str: string) {
 	const split = str.split(" ");
 
 	split.forEach((word, i) => {
+		if (word === "") return;
 		const firstLetter = word.sub(1, 1);
 		const theRest = word.sub(2);
-		split[i] = firstLetter.upper() + theRest;
+		split[i] = firstLetter.upper() + theRest.lower();
 	});
 
-	const result = split.join(" ");
-	return result;
+	return split.join(" ");
 }

@@ -24,23 +24,19 @@ interface Props extends React.PropsWithChildren {
 }
 
 export default function ContainerFrame(props: Props) {
-	if (props.allPadding) {
-		props.paddingTop = props.allPadding;
-		props.paddingBottom = props.allPadding;
-		props.paddingLeft = props.allPadding;
-		props.paddingRight = props.allPadding;
-	}
+	const paddingTop = props.paddingTop ?? props.allPadding;
+	const paddingBottom = props.paddingBottom ?? props.allPadding;
+	const paddingLeft = props.paddingLeft ?? props.allPadding;
+	const paddingRight = props.paddingRight ?? props.allPadding;
 
-	if (props.backgroundTransparency === undefined) {
-		props.backgroundTransparency = props.backgroundColor3 ? 0 : 1;
-	}
+	const backgroundTransparency = props.backgroundTransparency ?? (props.backgroundColor3 ? 0 : 1);
 
 	return (
 		<scrollingframe
 			key="Container"
 			AnchorPoint={props.anchorPoint}
 			AutomaticCanvasSize={props.automaticCanvasSize ?? Enum.AutomaticSize.Y}
-			BackgroundTransparency={props.backgroundTransparency}
+			BackgroundTransparency={backgroundTransparency}
 			BackgroundColor3={props.backgroundColor3}
 			BorderSizePixel={0}
 			CanvasSize={new UDim2(0, 0, 0, 0)}
@@ -61,10 +57,10 @@ export default function ContainerFrame(props: Props) {
 				/>
 			)}
 			<uipadding
-				PaddingBottom={props.paddingBottom}
-				PaddingLeft={props.paddingLeft}
-				PaddingRight={props.paddingRight}
-				PaddingTop={props.paddingTop}
+				PaddingBottom={paddingBottom}
+				PaddingLeft={paddingLeft}
+				PaddingRight={paddingRight}
+				PaddingTop={paddingTop}
 			/>
 
 			{props.children}

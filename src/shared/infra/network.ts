@@ -1,6 +1,5 @@
 import { Networking } from "@flamework/networking";
 import { BroadcastAction } from "@rbxts/reflex";
-import { PlayerData } from "./store/slices/players/types";
 import { Setting } from "../domain/Settings";
 
 interface ServerEvents {
@@ -16,7 +15,6 @@ interface ServerFunctions {}
 interface ClientEvents {
 	reflex: {
 		dispatch: (actions: Array<BroadcastAction>) => void;
-		hydrate: (actions: PlayerData) => void;
 		start: () => void;
 	};
 }

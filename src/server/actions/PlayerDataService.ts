@@ -5,7 +5,7 @@ import { Players, RunService } from "@rbxts/services";
 import { serverStore } from "server/infra/store";
 import { selectPlayerBalances, selectPlayerData } from "shared/infra/store/selectors/players";
 import { PlayerData } from "shared/infra/store/slices/players/types";
-import { defaultPlayerData } from "shared/infra/store/slices/players/utils";
+import { getDefaultPlayerData } from "shared/infra/store/slices/players/utils";
 import { forEveryPlayer } from "shared/utils/functions/forEveryPlayer";
 
 let DataStoreName = "Production";
@@ -15,7 +15,7 @@ if (RunService.IsStudio()) DataStoreName = "Testing";
 
 @Service()
 export class PlayerDataService implements OnInit {
-	private profileStore = ProfileService.GetProfileStore(DataStoreName, defaultPlayerData);
+	private profileStore = ProfileService.GetProfileStore(DataStoreName, getDefaultPlayerData());
 	private profiles = new Map<Player, Profile<PlayerData>>();
 
 	onInit() {
@@ -24,6 +24,8 @@ export class PlayerDataService implements OnInit {
 			(player) => this.removeProfile(player),
 		);
 
+		// Demo: gives every player +1 Coin per second so the template's reflex broadcast
+		// is visible without writing any gameplay logic. Remove for a real game.
 		task.spawn(() => {
 			while (true) {
 				Players.GetPlayers().forEach((player) =>
@@ -36,48 +38,51 @@ export class PlayerDataService implements OnInit {
 
 	private createProfile(player: Player) {
 		const userId = player.UserId;
+		const userIdStr = tostring(userId);
 		const profileKey = KEY_TEMPLATE.format(userId);
 		const profile = this.profileStore.LoadProfileAsync(profileKey);
 
 		if (!profile) return player.Kick();
 
-		profile.ListenToRelease(() => {
-			this.profiles.delete(player);
-			serverStore.closePlayerData(tostring(player.UserId));
-			player.Kick();
-		});
-
 		profile.AddUserId(userId);
 		profile.Reconcile();
 
 		this.profiles.set(player, profile);
-		serverStore.loadPlayerData(tostring(player.UserId), profile.Data);
-		this.createLeaderstats(player);
+		serverStore.loadPlayerData(userIdStr, profile.Data);
 
-		const unsubscribe = serverStore.subscribe(selectPlayerData(tostring(player.UserId)), (save) => {
+		const unsubscribeLeaderstats = this.createLeaderstats(player);
+		const unsubscribeData = serverStore.subscribe(selectPlayerData(userIdStr), (save) => {
 			if (save) profile.Data = save;
 		});
-		Players.PlayerRemoving.Connect((player) => {
-			if (player === player) unsubscribe();
+
+		profile.ListenToRelease(() => {
+			unsubscribeData();
+			unsubscribeLeaderstats();
+			this.profiles.delete(player);
+			serverStore.closePlayerData(userIdStr);
+			player.Kick();
 		});
 	}
 
 	private createLeaderstats(player: Player) {
-		const leaderstats = new Instance("Folder", player);
+		const userIdStr = tostring(player.UserId);
+
+		const leaderstats = new Instance("Folder");
 		leaderstats.Name = "leaderstats";
 
-		const coins = new Instance("NumberValue", leaderstats);
+		const coins = new Instance("NumberValue");
 		coins.Name = "Coins";
+		coins.Parent = leaderstats;
 
-		const gems = new Instance("NumberValue", leaderstats);
+		const gems = new Instance("NumberValue");
 		gems.Name = "Gems";
+		gems.Parent = leaderstats;
 
-		const unsubscribe = serverStore.subscribe(selectPlayerBalances(tostring(player.UserId)), (save) => {
+		leaderstats.Parent = player;
+
+		return serverStore.subscribe(selectPlayerBalances(userIdStr), (save) => {
 			coins.Value = save?.Coins ?? 0;
 			gems.Value = save?.Gems ?? 0;
-		});
-		Players.PlayerRemoving.Connect((player) => {
-			if (player === player) unsubscribe();
 		});
 	}
 

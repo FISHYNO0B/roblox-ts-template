@@ -4,7 +4,7 @@ import { clientStore } from "client/infra/store";
 import { ReflexProvider } from "@rbxts/react-reflex";
 import HolderApp from "../app/holder/holder-app";
 import { HOLDER_PAGES } from "shared/domain/Gui";
-import { defaultPlayerData } from "shared/infra/store/slices/players/utils";
+import { getDefaultPlayerData } from "shared/infra/store/slices/players/utils";
 import { GetStatePlayerId } from "./utils/GetStatePlayerId";
 
 const Story = {
@@ -13,7 +13,7 @@ const Story = {
 	reactRoblox: ReactRoblox,
 	story: () => {
 		const latestPage = HOLDER_PAGES[HOLDER_PAGES.size() - 1];
-		clientStore.loadPlayerData(GetStatePlayerId(), defaultPlayerData);
+		clientStore.loadPlayerData(GetStatePlayerId(), getDefaultPlayerData());
 		clientStore.setHolderPage(latestPage);
 		clientStore.toggleSetting(GetStatePlayerId(), "PvP");
 

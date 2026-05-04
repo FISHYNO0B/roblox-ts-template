@@ -1,13 +1,13 @@
 import { serverStore } from "server/infra/store";
 import { selectPlayerBalance, selectPlayerBalances } from "shared/infra/store/selectors/players";
-import { defaultPlayerData } from "shared/infra/store/slices/players/utils";
+import { getDefaultPlayerData } from "shared/infra/store/slices/players/utils";
 import { resetStore } from "../utils/resetStore";
 
 export = () => {
 	const playerId = tostring("TEST");
 
 	it("should have balances", () => {
-		serverStore.loadPlayerData(playerId, defaultPlayerData);
+		serverStore.loadPlayerData(playerId, getDefaultPlayerData());
 		serverStore.flush();
 		const balances = serverStore.getState(selectPlayerBalances(playerId));
 		expect(balances).to.be.ok();

@@ -16,12 +16,12 @@ interface Props extends React.PropsWithChildren {
 }
 
 export default function Frame(props: Props) {
-	props.backgroundTransparency = props.backgroundTransparency ?? 0; // Do this to make Stroke condition simpler
+	const backgroundTransparency = props.backgroundTransparency ?? 0;
 
 	return (
 		<frame
 			BackgroundColor3={props.backgroundColor3 ?? Color3.fromRGB(0, 163, 255)}
-			BackgroundTransparency={props.backgroundTransparency ?? 0}
+			BackgroundTransparency={backgroundTransparency}
 			BorderSizePixel={0}
 			AnchorPoint={props.anchorPoint ?? new Vector2(0.5, 0.5)}
 			Position={props.position ?? new UDim2(0.5, 0, 0.5, 0)}
@@ -32,7 +32,7 @@ export default function Frame(props: Props) {
 		>
 			{props.children}
 
-			{props.backgroundTransparency === 0 && <uistroke Thickness={props.uiStrokeSize ?? 5} />}
+			{backgroundTransparency === 0 && <uistroke Thickness={props.uiStrokeSize ?? 5} />}
 			<uicorner CornerRadius={props.uiCornerSize ?? new UDim(0, 22)} />
 		</frame>
 	);

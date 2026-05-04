@@ -12,6 +12,7 @@ import TextButton from "client/system-ui/components/textButton";
 
 export default function HolderApp() {
 	const page = useSelector(selectHolderPage);
+	const isStudioEdit = RunService.IsStudio() && !RunService.IsRunMode();
 
 	function getApp() {
 		if (page === "Settings") {
@@ -19,32 +20,19 @@ export default function HolderApp() {
 		}
 	}
 
-	function cyclePage(direction: "next" | "previous") {
-		if (!page) return;
-
-		const index = HOLDER_PAGES.indexOf(page);
-		const nextIndex = (index + 1) % HOLDER_PAGES.size();
-		const previousIndex = (index - 1 + HOLDER_PAGES.size()) % HOLDER_PAGES.size();
-
-		if (direction === "next") {
-			clientStore.setHolderPage(HOLDER_PAGES[nextIndex]);
-		} else {
-			clientStore.setHolderPage(HOLDER_PAGES[previousIndex]);
-		}
-	}
-
 	function getCyclePage(direction: "next" | "previous") {
 		if (!page) return HOLDER_PAGES[0];
 
+		const len = HOLDER_PAGES.size();
 		const index = HOLDER_PAGES.indexOf(page);
-		const nextIndex = (index + 1) % HOLDER_PAGES.size();
-		const previousIndex = (index - 1 + HOLDER_PAGES.size()) % HOLDER_PAGES.size();
+		const offset = direction === "next" ? 1 : -1;
 
-		if (direction === "next") {
-			return HOLDER_PAGES[nextIndex];
-		} else {
-			return HOLDER_PAGES[previousIndex];
-		}
+		return HOLDER_PAGES[(index + offset + len) % len];
+	}
+
+	function cyclePage(direction: "next" | "previous") {
+		if (!page) return;
+		clientStore.setHolderPage(getCyclePage(direction));
 	}
 
 	return (
@@ -74,25 +62,25 @@ export default function HolderApp() {
 				<ButtonsApp />
 			</Frame>
 
-			{RunService.IsStudio() && !RunService.IsRunMode() && (
-				<TextButton
-					text={`Next: ${getCyclePage("next")}`}
-					size={new UDim2(0, 200, 0, 65)}
-					textSize={24}
-					position={new UDim2(0, 0, 0, 70)}
-					anchorPoint={new Vector2(0, 0)}
-					onClick={() => cyclePage("next")}
-				/>
-			)}
-			{RunService.IsStudio() && !RunService.IsRunMode() && (
-				<TextButton
-					text={`Previous: ${getCyclePage("previous")}`}
-					size={new UDim2(0, 200, 0, 65)}
-					textSize={24}
-					position={new UDim2(0, 0, 0, 0)}
-					anchorPoint={new Vector2(0, 0)}
-					onClick={() => cyclePage("previous")}
-				/>
+			{isStudioEdit && (
+				<>
+					<TextButton
+						text={`Next: ${getCyclePage("next")}`}
+						size={new UDim2(0, 200, 0, 65)}
+						textSize={24}
+						position={new UDim2(0, 0, 0, 70)}
+						anchorPoint={new Vector2(0, 0)}
+						onClick={() => cyclePage("next")}
+					/>
+					<TextButton
+						text={`Previous: ${getCyclePage("previous")}`}
+						size={new UDim2(0, 200, 0, 65)}
+						textSize={24}
+						position={new UDim2(0, 0, 0, 0)}
+						anchorPoint={new Vector2(0, 0)}
+						onClick={() => cyclePage("previous")}
+					/>
+				</>
 			)}
 		</frame>
 	);

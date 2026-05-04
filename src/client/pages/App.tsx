@@ -9,9 +9,8 @@ import ScreenGui from "client/system-ui/components/scaledGui";
 
 @Controller({})
 export class App implements OnStart {
-	private playerGui = Players.LocalPlayer.WaitForChild("PlayerGui");
-
 	onStart() {
+		const playerGui = Players.LocalPlayer.WaitForChild("PlayerGui");
 		const root = createRoot(new Instance("Folder"));
 		root.render(
 			createPortal(
@@ -20,7 +19,7 @@ export class App implements OnStart {
 						<HolderApp />
 					</ScreenGui>
 				</ReflexProvider>,
-				this.playerGui,
+				playerGui,
 			),
 		);
 	}

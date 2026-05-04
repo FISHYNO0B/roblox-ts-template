@@ -16,11 +16,15 @@ export const settingsSlice = createProducer(initialState, {
 		[player]: undefined,
 	}),
 
-	toggleSetting: (state, player: string, setting: keyof PlayerSettings) => ({
-		...state,
-		[player]: {
-			...state[player]!,
-			[setting]: !state[player]![setting],
-		},
-	}),
+	toggleSetting: (state, player: string, setting: keyof PlayerSettings) => {
+		const current = state[player];
+
+		return {
+			...state,
+			[player]: current && {
+				...current,
+				[setting]: !current[setting],
+			},
+		};
+	},
 });
