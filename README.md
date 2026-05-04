@@ -11,9 +11,10 @@ The goal of this project is to be able to quickly launch into creating your next
 
 To set up and start using this template, use these commands in a terminal located in the same directory as this repository:
 
-1. `npm i` - Installs all dependencies.
-2. `npm run build` - Builds the project.
-3. `npm start` - Starts both watch mode and Rojo server for development.
+1. `rokit install` - Installs the Roblox toolchain (Rojo) pinned in [`rokit.toml`](rokit.toml). Requires [Rokit](https://github.com/rojo-rbx/rokit) installed once globally.
+2. `npm i` - Installs all dependencies.
+3. `npm run build` - Builds the project.
+4. `npm start` - Starts both watch mode and Rojo server for development.
 
 Alternatively, you can run the processes separately:
 - `npm run watch` - Initiates the watch mode for continuous development.
