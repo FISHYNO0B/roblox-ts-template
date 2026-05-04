@@ -4,4 +4,6 @@
 *.tsbuildinfo
 flamework.build
 /.idea
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
