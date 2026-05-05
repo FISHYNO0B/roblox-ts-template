@@ -1,18 +1,20 @@
-import CurrencyFrame from "./components/currency-frame";
-import { CURRENCIES } from "shared/domain/Currency";
 import React from "@rbxts/react";
-import Frame from "client/ui/primitives/frame";
+import { Stack } from "client/ui/kit";
+import { CURRENCIES } from "shared/domain/Currency";
+import CurrencyFrame from "./components/currency-frame";
 
 export default function CurrencyApp() {
-	const currencyFrames = CURRENCIES.map((currency) => {
-		return <CurrencyFrame currency={currency} />;
-	});
-
 	return (
-		<Frame key="Currency" backgroundTransparency={1} automaticSize={Enum.AutomaticSize.XY} layoutOrder={0}>
-			{currencyFrames}
-
-			<uilistlayout Padding={new UDim(0, 15)} />
-		</Frame>
+		<Stack
+			direction="vertical"
+			spacing={2}
+			automaticSize={Enum.AutomaticSize.XY}
+			size={new UDim2(0, 0, 0, 0)}
+			layoutOrder={0}
+		>
+			{CURRENCIES.map((currency) => (
+				<CurrencyFrame currency={currency} />
+			))}
+		</Stack>
 	);
 }

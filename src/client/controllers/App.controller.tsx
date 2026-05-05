@@ -4,8 +4,8 @@ import { ReflexProvider } from "@rbxts/react-reflex";
 import { createPortal, createRoot } from "@rbxts/react-roblox";
 import { Players } from "@rbxts/services";
 import { clientStore } from "client/infra/store";
+import { KitRoot, ToastProvider } from "client/ui/kit";
 import HolderApp from "client/ui/shell/holder-app";
-import ScreenGui from "client/ui/primitives/scaledGui";
 
 @Controller({})
 export class App implements OnStart {
@@ -15,9 +15,11 @@ export class App implements OnStart {
 		root.render(
 			createPortal(
 				<ReflexProvider producer={clientStore}>
-					<ScreenGui>
-						<HolderApp />
-					</ScreenGui>
+					<KitRoot>
+						<ToastProvider>
+							<HolderApp />
+						</ToastProvider>
+					</KitRoot>
 				</ReflexProvider>,
 				playerGui,
 			),

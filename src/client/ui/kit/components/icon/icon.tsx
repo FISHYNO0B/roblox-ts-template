@@ -15,6 +15,7 @@ export interface IconProps {
 
 function resolveAsset(asset: string | number): string {
 	if (typeIs(asset, "number")) return `rbxassetid://${asset}`;
+	if (string.find(asset, "^%d+$")[0] !== undefined) return `rbxassetid://${asset}`;
 	return asset;
 }
 

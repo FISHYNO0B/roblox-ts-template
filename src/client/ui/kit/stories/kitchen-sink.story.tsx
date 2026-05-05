@@ -6,6 +6,13 @@ import Box from "../components/box/box";
 import Button from "../components/button/button";
 import Card, { CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card/card";
 import Checkbox from "../components/checkbox/checkbox";
+import Dialog, {
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "../components/dialog/dialog";
 import Heading from "../components/heading/heading";
 import Icon from "../components/icon/icon";
 import ProgressBar from "../components/progress-bar/progress-bar";
@@ -17,7 +24,9 @@ import Stack from "../components/stack/stack";
 import Tabs, { TabsContent, TabsList, TabsTrigger } from "../components/tabs/tabs";
 import Text from "../components/text/text";
 import TextInput from "../components/text-input/text-input";
+import { ToastProvider, useToast } from "../components/toast/toast";
 import Toggle from "../components/toggle/toggle";
+import Tooltip from "../components/tooltip/tooltip";
 import { palette } from "../theme/colors";
 import { gradients, GradientToken } from "../theme/gradients";
 import { ThemeProvider, useTheme } from "../theme/provider";
@@ -484,6 +493,78 @@ function TabsDemo() {
 	);
 }
 
+function DialogDemo() {
+	const [open, setOpen] = useState(false);
+	return (
+		<>
+			<Button text="Open dialog" onClick={() => setOpen(true)} />
+			<Dialog open={open} onOpenChange={setOpen} size="md">
+				<DialogHeader>
+					<DialogTitle text="Are you sure?" />
+					<DialogDescription text="This will permanently delete the highlighted items." />
+				</DialogHeader>
+				<DialogContent>
+					<DialogDescription text="You can't undo this action." />
+				</DialogContent>
+				<DialogFooter>
+					<Button text="Cancel" variant="ghost" onClick={() => setOpen(false)} />
+					<Button text="Delete" variant="destructive" onClick={() => setOpen(false)} />
+				</DialogFooter>
+			</Dialog>
+		</>
+	);
+}
+
+function TooltipDemo() {
+	return (
+		<Stack direction="horizontal" spacing={6} align="center" automaticSize={Enum.AutomaticSize.Y}>
+			<Tooltip content="Save (Ctrl+S)" delay={0.2}>
+				<Button text="Save" variant="solid" />
+			</Tooltip>
+			<Tooltip content="Settings" side="right" delay={0.2}>
+				<Button variant="ghost" leftIcon={16545611198} />
+			</Tooltip>
+			<Tooltip content="Tooltip on bottom" side="bottom" delay={0.2}>
+				<Button text="Hover me" variant="outline" />
+			</Tooltip>
+		</Stack>
+	);
+}
+
+function ToastDemoInner() {
+	const { toast } = useToast();
+	return (
+		<Stack
+			direction="horizontal"
+			spacing={2}
+			wrap={true}
+			automaticSize={Enum.AutomaticSize.Y}
+			size={new UDim2(1, 0, 0, 0)}
+		>
+			<Button
+				text="Default"
+				variant="solid"
+				onClick={() => toast({ title: "Saved", description: "Your changes were saved." })}
+			/>
+			<Button
+				text="Success"
+				variant="solid"
+				onClick={() => toast({ title: "Quest complete", description: "+250 gold", variant: "success" })}
+			/>
+			<Button
+				text="Warning"
+				variant="solid"
+				onClick={() => toast({ title: "Connection unstable", variant: "warning" })}
+			/>
+			<Button
+				text="Destructive"
+				variant="destructive"
+				onClick={() => toast({ title: "Save failed", description: "Try again.", variant: "destructive" })}
+			/>
+		</Stack>
+	);
+}
+
 function SkeletonsDemo() {
 	return (
 		<Stack
@@ -550,19 +631,31 @@ function KitchenSink() {
 				<SkeletonsDemo />
 			</Section>
 
-			<Section title="Icons" layoutOrder={9}>
+			<Section title="Dialog" layoutOrder={9}>
+				<DialogDemo />
+			</Section>
+
+			<Section title="Tooltip" layoutOrder={10}>
+				<TooltipDemo />
+			</Section>
+
+			<Section title="Toast" layoutOrder={11}>
+				<ToastDemoInner />
+			</Section>
+
+			<Section title="Icons" layoutOrder={12}>
 				<IconsDemo />
 			</Section>
 
-			<Section title="Separators" layoutOrder={10}>
+			<Section title="Separators" layoutOrder={13}>
 				<SeparatorsDemo />
 			</Section>
 
-			<Section title="Semantic tokens" layoutOrder={11}>
+			<Section title="Semantic tokens" layoutOrder={14}>
 				<SemanticTokens />
 			</Section>
 
-			<Section title="Palette" layoutOrder={12}>
+			<Section title="Palette" layoutOrder={15}>
 				<PaletteRow name="slate" scale={palette.slate} layoutOrder={0} />
 				<PaletteRow name="blue" scale={palette.blue} layoutOrder={1} />
 				<PaletteRow name="violet" scale={palette.violet} layoutOrder={2} />
@@ -571,19 +664,19 @@ function KitchenSink() {
 				<PaletteRow name="amber" scale={palette.amber} layoutOrder={5} />
 			</Section>
 
-			<Section title="Spacing" layoutOrder={13}>
+			<Section title="Spacing" layoutOrder={16}>
 				<SpacingScale />
 			</Section>
 
-			<Section title="Radius" layoutOrder={14}>
+			<Section title="Radius" layoutOrder={17}>
 				<RadiusScale />
 			</Section>
 
-			<Section title="Typography" layoutOrder={15}>
+			<Section title="Typography" layoutOrder={18}>
 				<TypographyScale />
 			</Section>
 
-			<Section title="Gradients" layoutOrder={16}>
+			<Section title="Gradients" layoutOrder={19}>
 				<GradientGrid />
 			</Section>
 		</ScrollArea>
@@ -596,9 +689,11 @@ const Story = {
 	reactRoblox: ReactRoblox,
 	story: () => (
 		<ThemeProvider theme={darkTheme}>
-			<Box bg="background" size={new UDim2(1, 0, 1, 0)}>
-				<KitchenSink />
-			</Box>
+			<ToastProvider>
+				<Box bg="background" size={new UDim2(1, 0, 1, 0)}>
+					<KitchenSink />
+				</Box>
+			</ToastProvider>
 		</ThemeProvider>
 	),
 };

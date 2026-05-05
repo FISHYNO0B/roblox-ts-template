@@ -1,8 +1,7 @@
 import React from "@rbxts/react";
-import ImageLabel from "client/ui/primitives/imageLabel";
-import TextButton from "client/ui/primitives/textButton";
-import TextLabel from "client/ui/primitives/textLabel";
-import { COLORS, ImageName } from "shared/domain/Gui";
+import { Box, Icon, Text, Stack } from "client/ui/kit";
+import { usePressScale } from "client/ui/kit";
+import { ImageName, IMAGES } from "shared/domain/Gui";
 
 interface Props {
 	button: string;
@@ -11,28 +10,49 @@ interface Props {
 }
 
 export default function Button(props: Props) {
+	const [scale, events] = usePressScale({ hoverScale: 1.06, pressScale: 0.94 });
+
 	return (
-		<TextButton
-			key={props.button}
-			backgroundColor3={COLORS.PrimaryBackground}
-			onClick={props.click}
-			uiCornerSize={new UDim(0, 35)}
-			uiStrokeSize={4}
+		<textbutton
+			AutoButtonColor={false}
+			BackgroundTransparency={1}
+			BorderSizePixel={0}
+			Text=""
+			Size={new UDim2(0, 70, 0, 90)}
+			Event={{
+				MouseButton1Click: props.click,
+				MouseEnter: events.MouseEnter,
+				MouseLeave: events.MouseLeave,
+				MouseButton1Down: events.MouseButton1Down,
+				MouseButton1Up: events.MouseButton1Up,
+			}}
 		>
-			<ImageLabel
-				image={props.image}
-				position={new UDim2(0.5, 0, 0.5, 0)}
-				anchorPoint={new Vector2(0.5, 0.5)}
-				size={new UDim2(0.85, 0, 0.85, 0)}
-			/>
-			<TextLabel
-				anchorPoint={new Vector2(0.5, 1)}
-				position={new UDim2(0.5, 0, 1, 10)}
-				size={new UDim2(1, 0, 0, 20)}
-				text={props.button}
-				textSize={20}
-				uiStrokeSize={2}
-			/>
-		</TextButton>
+			<uiscale Scale={scale} />
+			<Stack
+				direction="vertical"
+				spacing={1}
+				align="center"
+				size={new UDim2(1, 0, 1, 0)}
+				automaticSize={Enum.AutomaticSize.None}
+			>
+				<Box bg="card" border="border" radius="lg" size={new UDim2(0, 64, 0, 64)} layoutOrder={0}>
+					<Icon
+						asset={IMAGES[props.image]}
+						size={40}
+						color="foreground"
+						position={new UDim2(0.5, 0, 0.5, 0)}
+						anchorPoint={new Vector2(0.5, 0.5)}
+					/>
+				</Box>
+				<Text
+					text={props.button}
+					size="xs"
+					color="mutedForeground"
+					align="center"
+					frameSize={new UDim2(1, 0, 0, 16)}
+					layoutOrder={1}
+				/>
+			</Stack>
+		</textbutton>
 	);
 }

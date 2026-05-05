@@ -1,7 +1,8 @@
 # UI Kit
 
-> Status: active
+> Status: done
 > Level: system
+> Completed: 2026-05-05
 
 ## Idea
 
@@ -174,6 +175,34 @@ Each component folder: `<name>.tsx` + `<name>.story.tsx`. Stories use UI Labs `c
 
 ## Open questions
 
-- Roblox `Font` instance with custom asset id may need preloading for first-frame rendering. Decide in Wave 1 whether `<KitRoot>` should ContentProvider:PreloadAsync the font, or accept first-frame fallback.
-- ScrollArea: do we need a custom themed scrollbar image, or stick with `ScrollBarImageColor3` set from a token?
-- Toast positioning (top-right vs bottom-right vs configurable) — defer to Wave 4.
+- ~~Roblox `Font` instance with custom asset id may need preloading for first-frame rendering.~~ — Skipped preload; first-frame fallback to default font is acceptable.
+- ~~ScrollArea: themed scrollbar image?~~ — Stuck with `ScrollBarImageColor3` set from `border` token.
+- ~~Toast positioning?~~ — Top-right corner, hardcoded inside `ToastProvider`. Configurable later if needed.
+
+## Retro
+
+Shipped in four waves over a single session — Foundation → Core → Form/Display → Overlays + migration. Total: 21 components, 21 stories, full theme system, motion hooks on `@rbxts/ripple`, kitchen-sink, four migrated features.
+
+**What worked:**
+- Splitting into waves was the right call — each wave had a clean acceptance moment ("typecheck + lint clean, kitchen-sink renders") and a natural review point. Wave 4 was the heaviest because of migration but all the design work was settled by then.
+- The `variant()` helper + `useTheme()` pattern made every component look consistent without copy-pasting style logic. Buttons, badges, and toasts all read the same color tokens.
+- Story-shell helper (`<StoryShell>`, `<Section>`, `<Row>`) cut a lot of boilerplate — every component story has the same skeleton.
+- `usePressScale()` baked into Button means hover/press feedback is uniform across the whole UI. No per-feature animation tweaking.
+- For looping animations (Skeleton pulse, ProgressBar shimmer indeterminate), bypassing ripple and using `useBinding` + `RunService.Heartbeat` directly was simpler than chaining `motion.onComplete` callbacks.
+
+**Surprises:**
+- roblox-ts reserves `next` and a few other identifiers — had to rename local variables in slider, text-input, and progress-bar story.
+- `useSpring<T>` inferring T as a literal (e.g. `Motion<-0.4>`) when called with a non-integer literal — fixed by passing explicit `<number>` and broadening `SpringOptions` (dropping the `<T>` constraint on the options arg).
+- Custom Roblox `Font` from rbxassetid uses `FontFace` prop instead of `Font` — easy to miss, every text element in the kit has to remember.
+- `imagelabel` doesn't have a `Loaded` event in @rbxts/types — Avatar fallback now just always renders behind the image instead of waiting for load.
+
+**What we'd change next time:**
+- Should have written a `<TextInput>` placeholder text component with a more obvious focus ring earlier — by Wave 4 most form examples already used the outline variant.
+- The `frameSize` prop name (vs `size` for typographic size on `<Text>`) is awkward. Worth renaming consistently across the kit when we have a chance — perhaps `boxSize` everywhere.
+- ToastProvider's viewport positioning is hardcoded to top-right. Should accept a prop like `position="top-right" | "bottom-right" | "top-center"` next time we touch it.
+
+**Migration notes:**
+- Currency frame is now smaller (220×56) and uses `Card`-style chrome — visually different from the cartoony original, but matches the rest of the kit. The "+" button is a `solid` Button instead of the green pill.
+- Settings page uses `ScrollArea` with kit `Toggle`s instead of red/green toggle buttons. Each row is a `Card`-styled Box.
+- Holder shell's studio-only "Next/Previous" cycle buttons are now outline `Button`s in the top-left corner.
+- Image-asset values in `IMAGES` table stayed as bare digit strings; `Icon`'s asset resolver now handles them by autoprefixing `rbxassetid://`.

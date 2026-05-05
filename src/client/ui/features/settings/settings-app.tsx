@@ -1,44 +1,57 @@
 import React from "@rbxts/react";
-import ContainerFrame from "client/ui/primitives/containerFrame";
-import Exit from "client/ui/primitives/exit";
-import Frame from "client/ui/primitives/frame";
-import Title from "client/ui/primitives/title";
+import { Box, Button, Heading, ScrollArea, Stack } from "client/ui/kit";
+import { clientStore } from "client/infra/store";
 import { SETTINGS } from "shared/domain/Settings";
 import SettingButton from "./components/setting-button";
 
 export default function SettingsApp() {
-	const settingButtons = SETTINGS.map((setting) => {
-		return <SettingButton setting={setting} />;
-	});
-
 	return (
-		<Frame
-			key={"Settings"}
+		<Box
+			bg="card"
+			border="border"
+			radius="xl"
+			padding={5}
 			anchorPoint={new Vector2(0.5, 0.5)}
 			position={new UDim2(0.5, 0, 0.5, 0)}
-			size={new UDim2(0, 600, 0, 600)}
+			size={new UDim2(0, 560, 0, 600)}
 		>
-			<Title
-				text="Settings"
-				anchorPoint={new Vector2(0.5, 0)}
-				position={new UDim2(0.5, 0, 0, 20)}
-				size={new UDim2(0, 366, 0, 73)}
-			/>
-
-			<Exit size={new UDim2(0, 65, 0, 65)} position={new UDim2(1, 30, 0, -30)} anchorPoint={new Vector2(1, 0)} />
-
-			<ContainerFrame
-				anchorPoint={new Vector2(0.5, 0)}
-				position={new UDim2(0.5, 0, 0, 120)}
-				size={new UDim2(0, 561, 0, 441)}
-				cellPadding={new UDim2(0, 0, 0, 15)}
-				cellSize={new UDim2(0.95, 0, 0, 65)}
-				horizontalAlignment={Enum.HorizontalAlignment.Center}
-				paddingTop={new UDim(0, 10)}
-				paddingBottom={new UDim(0, 10)}
+			<Stack
+				direction="vertical"
+				spacing={4}
+				size={new UDim2(1, 0, 1, 0)}
+				automaticSize={Enum.AutomaticSize.None}
 			>
-				{settingButtons}
-			</ContainerFrame>
-		</Frame>
+				<Stack
+					direction="horizontal"
+					spacing={3}
+					align="center"
+					size={new UDim2(1, 0, 0, 48)}
+					automaticSize={Enum.AutomaticSize.None}
+					layoutOrder={0}
+				>
+					<Heading
+						text="Settings"
+						level="title"
+						frameSize={new UDim2(1, -56, 1, 0)}
+						align="left"
+						layoutOrder={0}
+					/>
+					<Button
+						variant="ghost"
+						size="md"
+						text="×"
+						onClick={() => clientStore.setHolderPage(undefined)}
+						layoutOrder={1}
+						frameSize={new UDim2(0, 40, 0, 40)}
+					/>
+				</Stack>
+
+				<ScrollArea direction="vertical" padding={2} spacing={2} size={new UDim2(1, 0, 1, -64)} layoutOrder={1}>
+					{SETTINGS.map((setting) => (
+						<SettingButton setting={setting} />
+					))}
+				</ScrollArea>
+			</Stack>
+		</Box>
 	);
 }
