@@ -1,11 +1,14 @@
 import React from "@rbxts/react";
 import { darkTheme } from "../theme/theme";
-import { ThemeProvider, useTheme } from "../theme/provider";
+import { palette } from "../theme/colors";
+import { ThemeProvider } from "../theme/provider";
 import Box from "../components/box/box";
 import Stack from "../components/stack/stack";
 import Heading from "../components/heading/heading";
 import ScrollArea from "../components/scroll-area/scroll-area";
 import { SpacingToken } from "../theme/spacing";
+
+const STORY_CANVAS = palette.slate[700];
 
 interface StoryShellProps extends React.PropsWithChildren {
 	title?: string;
@@ -15,7 +18,6 @@ interface StoryShellProps extends React.PropsWithChildren {
 }
 
 function ShellInner(props: StoryShellProps) {
-	const theme = useTheme();
 	const padding = props.padding ?? 6;
 	const content = (
 		<Stack direction="vertical" spacing={5} automaticSize={Enum.AutomaticSize.Y}>
@@ -33,7 +35,7 @@ function ShellInner(props: StoryShellProps) {
 
 	if (props.scroll === false) {
 		return (
-			<Box bg="background" size={new UDim2(1, 0, 1, 0)} padding={padding}>
+			<Box bg={STORY_CANVAS} size={new UDim2(1, 0, 1, 0)} padding={padding}>
 				{content}
 			</Box>
 		);
@@ -42,7 +44,7 @@ function ShellInner(props: StoryShellProps) {
 	return (
 		<ScrollArea size={new UDim2(1, 0, 1, 0)} padding={padding} spacing={5}>
 			<frame
-				BackgroundColor3={theme.colors.background}
+				BackgroundColor3={STORY_CANVAS}
 				BackgroundTransparency={1}
 				Size={new UDim2(1, 0, 0, 0)}
 				AutomaticSize={Enum.AutomaticSize.Y}
@@ -57,7 +59,7 @@ function ShellInner(props: StoryShellProps) {
 export function StoryShell(props: StoryShellProps) {
 	return (
 		<ThemeProvider theme={darkTheme}>
-			<Box bg="background" size={new UDim2(1, 0, 1, 0)}>
+			<Box bg={STORY_CANVAS} size={new UDim2(1, 0, 1, 0)}>
 				<ShellInner {...props} />
 			</Box>
 		</ThemeProvider>

@@ -20,7 +20,7 @@ interface VariantStyle {
 const variantStyles: Record<ButtonVariant, VariantStyle> = {
 	solid: { bg: "primary", bgHover: "primary", fg: "primaryForeground" },
 	secondary: { bg: "secondary", bgHover: "secondary", fg: "secondaryForeground" },
-	outline: { bg: "transparent", bgHover: "secondary", fg: "foreground", border: "border" },
+	outline: { bg: "transparent", bgHover: "secondary", fg: "foreground", border: "mutedForeground" },
 	ghost: { bg: "transparent", bgHover: "secondary", fg: "foreground" },
 	destructive: { bg: "destructive", bgHover: "destructive", fg: "destructiveForeground" },
 };
@@ -92,7 +92,7 @@ export default function Button(props: ButtonProps) {
 			AutomaticSize={automaticSize}
 			Size={frameSize}
 			Position={props.position}
-			AnchorPoint={props.anchorPoint}
+			AnchorPoint={props.anchorPoint ?? new Vector2(0.5, 0.5)}
 			LayoutOrder={props.layoutOrder}
 			Active={!disabled}
 			Selectable={!disabled}
@@ -106,7 +106,9 @@ export default function Button(props: ButtonProps) {
 		>
 			<uiscale Scale={scale} />
 			<uicorner CornerRadius={theme.radius[s.radius]} />
-			{borderColor !== undefined && <uistroke Color={borderColor} Thickness={1} />}
+			{borderColor !== undefined && (
+				<uistroke Color={borderColor} Thickness={1} ApplyStrokeMode={Enum.ApplyStrokeMode.Border} />
+			)}
 			<uipadding
 				PaddingLeft={new UDim(0, theme.spacing[s.paddingX])}
 				PaddingRight={new UDim(0, theme.spacing[s.paddingX])}

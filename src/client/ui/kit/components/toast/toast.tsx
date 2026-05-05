@@ -151,8 +151,9 @@ function ToastItem(props: ToastItemProps) {
 				BackgroundColor3={accentColor}
 				BackgroundTransparency={opacity.map((o) => 1 - o)}
 				BorderSizePixel={0}
-				Size={new UDim2(0, 3, 1, 0)}
-				Position={new UDim2(0, -theme.spacing[4], 0, 0)}
+				AnchorPoint={new Vector2(0, 0.5)}
+				Size={new UDim2(0, 1, 1, -theme.spacing[1] * 2)}
+				Position={new UDim2(0, -theme.spacing[4] + theme.spacing[2], 0.5, 0)}
 			>
 				<uicorner CornerRadius={new UDim(1, 0)} />
 			</frame>

@@ -152,7 +152,7 @@ export const semanticDark: SemanticColors = {
 	warning: palette.amber[500],
 	warningForeground: palette.slate[950],
 
-	border: palette.slate[800],
+	border: palette.slate[600],
 	input: palette.slate[800],
 	ring: palette.blue[500],
 };
