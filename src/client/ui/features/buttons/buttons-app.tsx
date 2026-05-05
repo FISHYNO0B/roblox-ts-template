@@ -1,6 +1,6 @@
 import React from "@rbxts/react";
 import Object from "@rbxts/object-utils";
-import { Box, Icon, Stack, Text, usePressScale } from "client/ui/kit";
+import { Box, Icon, Stack, Text, usePressScale, useScaleAnchor } from "client/ui/kit";
 import { clientStore } from "client/infra/store";
 import { selectHolderPage } from "shared/infra/store/selectors/client";
 import { HolderPage } from "shared/domain/Gui";
@@ -18,15 +18,16 @@ interface HolderButtonProps {
 
 function HolderButton(props: HolderButtonProps) {
 	const [scale, events] = usePressScale({ hoverScale: 1.06, pressScale: 0.94 });
+	const buttonRef = useScaleAnchor<TextButton>();
 
 	return (
 		<textbutton
+			ref={buttonRef}
 			AutoButtonColor={false}
 			BackgroundTransparency={1}
 			BorderSizePixel={0}
 			Text=""
 			Size={new UDim2(0, 70, 0, 90)}
-			AnchorPoint={new Vector2(0.5, 0.5)}
 			Event={{
 				MouseButton1Click: props.onClick,
 				MouseEnter: events.MouseEnter,

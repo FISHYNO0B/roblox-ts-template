@@ -15,23 +15,23 @@ export function applyMusicStackOp(
 ): ReadonlyArray<MusicKey> {
 	switch (op.kind) {
 		case "push": {
-			const next = [...stack, op.key];
-			while (next.size() > maxSize) {
-				next.shift();
+			const updated = [...stack, op.key];
+			while (updated.size() > maxSize) {
+				updated.shift();
 			}
-			return next;
+			return updated;
 		}
 		case "pop": {
 			if (stack.size() === 0) return stack;
-			const next = [...stack];
-			next.pop();
-			return next;
+			const updated = [...stack];
+			updated.pop();
+			return updated;
 		}
 		case "replace": {
 			if (stack.size() === 0) return [op.key];
-			const next = [...stack];
-			next[next.size() - 1] = op.key;
-			return next;
+			const updated = [...stack];
+			updated[updated.size() - 1] = op.key;
+			return updated;
 		}
 		case "stop":
 			return [];

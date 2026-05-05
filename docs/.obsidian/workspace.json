@@ -185,6 +185,13 @@
   },
   "active": "c68c7e897b0d8bd4",
   "lastOpenFiles": [
+    "features/done/rate-limit-middleware.md",
+    "features/active/marketplace-monetization.md",
+    "features/inbox/rate-limit-middleware.md",
+    "features/inbox/marketplace-monetization.md",
+    "systems/monetization.md",
+    "adr/0007-monetization.md",
+    "features/active/rate-limit-middleware.md",
     "features/done/leaderstats.md",
     "systems/leaderstats.md",
     "features/inbox/rollback-pressable-primitive.md",
@@ -203,13 +210,6 @@
     "adr/0004-pressable-primitive.md",
     "systems/sound.md",
     "adr/0004-sound-system.md",
-    "features/active/sound-system.md",
-    "features/inbox/pressable-primitive.md",
-    "features/active/pressable-primitive.md",
-    "features/done/ui-kit.md",
-    "features/active/ui-kit.md",
-    "adr/0002-ui-kit-shadcn-style.md",
-    "systems/state.md",
-    "systems/networking.md"
+    "features/active/sound-system.md"
   ]
 }

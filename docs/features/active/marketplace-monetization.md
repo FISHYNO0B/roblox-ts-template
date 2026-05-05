@@ -1,10 +1,20 @@
 # MarketplaceService (DevProducts + GamePasses)
 
-> Status: inbox
+> Status: active
 > Level: system
 > Phase: 2
 > Depends on: (none — but pairs naturally with `analytics` later)
-> ADR needed: yes — `0007-monetization.md`
+> ADR: [0007-monetization](../../adr/0007-monetization.md)
+
+## Locked decisions
+
+All five recommendations from the original spec are accepted as-is:
+
+- **D1 — Idempotency:** `purchaseHistory: Array<string>` (PurchaseId list) on the player profile, capped at 50 entries pruned FIFO. Array (not `Set`) so the order is stable for FIFO pruning and serialises cleanly through ProfileService.
+- **D2 — Pass ownership cache:** queried once on join, stored in `players/<id>/passes` slice. Never re-queried mid-session.
+- **D3 — Passes in store:** new `players/<id>/passes: Record<GamePassKey, boolean>` slice synced via the existing broadcaster. Reactive selectors expose `selectHasPass(playerId, key)`.
+- **D4 — Prices:** not stored. `MarketplaceService:PromptProductPurchase` reads them server-side. Registry only stores `id` + `handler` + handler args.
+- **D5 — Handler error policy:** handler `error()` → `ProcessReceipt` returns `NotProcessedYet`. Roblox retries.
 
 ## Idea
 

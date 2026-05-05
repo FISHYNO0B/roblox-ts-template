@@ -17,9 +17,9 @@ Why first: every other system either references the asset registry directly (ico
 
 | # | Spec | Level | ADR | Touches save schema? |
 |---|---|---|---|---|
-| 5 | [leaderstats](inbox/leaderstats.md) | feature | — | no |
+| 5 | [leaderstats](done/leaderstats.md) ✅ | feature | — | no |
 | 6 | [rate-limit-middleware](inbox/rate-limit-middleware.md) | feature | — | no |
-| 7 | [marketplace-monetization](inbox/marketplace-monetization.md) | system | 0007 | yes (purchase history; safe additive) |
+| 7 | [marketplace-monetization](active/marketplace-monetization.md) | system | 0007 | yes (purchase history; safe additive) |
 | 8 | [preload-loading-screen](inbox/preload-loading-screen.md) | feature | — | no |
 | 9 | [game-notifications](inbox/game-notifications.md) | feature | — | no (transient) |
 | 10 | [input-abstraction](inbox/input-abstraction.md) | system | 0008 | no |

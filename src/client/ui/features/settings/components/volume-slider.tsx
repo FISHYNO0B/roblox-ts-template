@@ -17,10 +17,10 @@ export default function VolumeSlider(props: Props) {
 	const playerId = GetStatePlayerId();
 	const value = useSelector(selectPlayerVolume(playerId, props.group)) ?? 1;
 
-	const change = (next: number) => {
+	const change = (nextValue: number) => {
 		const isInGame = RunService.IsRunning();
-		if (isInGame) ClientEvents.setVolume(props.group, next);
-		else clientStore.setVolume(playerId, props.group, next);
+		if (isInGame) ClientEvents.setVolume(props.group, nextValue);
+		else clientStore.setVolume(playerId, props.group, nextValue);
 	};
 
 	return (

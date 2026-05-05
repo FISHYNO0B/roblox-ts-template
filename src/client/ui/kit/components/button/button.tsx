@@ -2,6 +2,7 @@ import React from "@rbxts/react";
 import { IconKey } from "shared/domain/assets/Icons";
 import { ColorToken } from "../../core/resolve-color";
 import { usePressScale } from "../../motion/use-press-scale";
+import { useScaleAnchor } from "../../motion/use-scale-anchor";
 import { useTheme } from "../../theme/provider";
 import { FontSizeToken } from "../../theme/typography";
 import { RadiusToken } from "../../theme/radius";
@@ -71,6 +72,7 @@ export default function Button(props: ButtonProps) {
 		pressScale: 0.97,
 		disabled,
 	});
+	const buttonRef = useScaleAnchor<TextButton>();
 
 	const bgColor = v.bg === "transparent" ? theme.colors.background : theme.colors[v.bg];
 	const bgTransparency = v.bg === "transparent" ? 1 : disabled ? 0.5 : 0;
@@ -85,6 +87,7 @@ export default function Button(props: ButtonProps) {
 
 	return (
 		<textbutton
+			ref={buttonRef}
 			AutoButtonColor={false}
 			BackgroundColor3={bgColor}
 			BackgroundTransparency={bgTransparency}
@@ -93,7 +96,7 @@ export default function Button(props: ButtonProps) {
 			AutomaticSize={automaticSize}
 			Size={frameSize}
 			Position={props.position}
-			AnchorPoint={props.anchorPoint ?? new Vector2(0.5, 0.5)}
+			AnchorPoint={props.anchorPoint}
 			LayoutOrder={props.layoutOrder}
 			Active={!disabled}
 			Selectable={!disabled}

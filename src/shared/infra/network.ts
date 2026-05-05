@@ -2,6 +2,7 @@ import { Networking } from "@flamework/networking";
 import { BroadcastAction } from "@rbxts/reflex";
 import { MusicKey } from "shared/domain/assets/Music";
 import { SoundKey } from "shared/domain/assets/Sounds";
+import { DevProductKey, GamePassKey } from "shared/domain/Products";
 import { Setting, VolumeGroup } from "../domain/Settings";
 
 interface ServerEvents {
@@ -11,6 +12,9 @@ interface ServerEvents {
 
 	toggleSetting: (setting: Setting) => void;
 	setVolume: (group: VolumeGroup, value: number) => void;
+
+	promptPurchase: (productKey: DevProductKey) => void;
+	promptPass: (passKey: GamePassKey) => void;
 }
 
 interface ServerFunctions {}

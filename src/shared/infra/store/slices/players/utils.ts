@@ -1,5 +1,6 @@
+import { GAME_PASS_KEYS } from "shared/domain/Products";
 import { DEFAULT_VOLUME, SETTINGS, VOLUME_GROUPS } from "shared/domain/Settings";
-import { PlayerData, PlayerSettings } from "./types";
+import { PlayerData, PlayerPasses, PlayerSettings } from "./types";
 
 export function getDefaultPlayerData(): PlayerData {
 	const toggles = {} as PlayerSettings["toggles"];
@@ -21,7 +22,17 @@ export function getDefaultPlayerData(): PlayerData {
 			toggles,
 			volumes,
 		},
+		purchaseHistory: [],
 	};
 }
 
+export function getDefaultPlayerPasses(): PlayerPasses {
+	const passes = {} as PlayerPasses;
+	GAME_PASS_KEYS.forEach((key) => {
+		passes[key] = false;
+	});
+	return passes;
+}
+
 export const defaultPlayerData: Readonly<PlayerData> = getDefaultPlayerData();
+export const defaultPlayerPasses: Readonly<PlayerPasses> = getDefaultPlayerPasses();

@@ -1,6 +1,6 @@
 # Rate-limit Middleware (Networking)
 
-> Status: inbox
+> Status: done
 > Level: feature
 > Phase: 2
 > Depends on: (none)
@@ -57,10 +57,14 @@ Wire it into `server/infra/network.ts` middleware chain.
 
 ## Acceptance criteria
 
-- [ ] Sending 100 `toggleSetting` events in 1s — first ~5 pass, rest dropped, no error to client
-- [ ] After 5s of idle, bucket refilled to capacity
-- [ ] Player leaving releases buckets (no leak)
-- [ ] Token bucket unit-tested for capacity, refill, drain
-- [ ] Existing tests still pass
-- [ ] `npm run typecheck` + `npm run lint` clean
-- [ ] `networking.md` updated with rate-limit section
+- [x] Sending 100 `toggleSetting` events in 1s — first ~5 pass, rest dropped, no error to client
+- [x] After 5s of idle, bucket refilled to capacity
+- [x] Player leaving releases buckets (no leak)
+- [x] Token bucket unit-tested for capacity, refill, drain
+- [x] Existing tests still pass
+- [x] `npm run typecheck` + `npm run lint` clean
+- [x] `networking.md` updated with rate-limit section
+
+## Retro
+
+Landed close to the original sketch. One deviation: the inbox API mock-up used `event.next()`, but real Flamework middleware is a factory — `(processNext, event) => (player, ...args) => ...` — and middleware needs to be generic over `I` to satisfy the per-event parameter types in `EventMiddlewareList`. Solved by exporting `rateLimitMiddleware<I>()` as a factory and calling it per attachment site. Middleware is wired explicitly to each event in `network.ts` (Flamework Networking has no global-middleware option), so adding a new server-bound event means adding it to that list. Studio play-test confirmed flood drop + refill behavior; cleanup on `PlayerRemoving` is bound at module load.
