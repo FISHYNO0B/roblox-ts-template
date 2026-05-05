@@ -183,8 +183,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "c68c7e897b0d8bd4",
+  "active": "a18610619e67316a",
   "lastOpenFiles": [
+    "features/active/ui-kit.md",
+    "adr/0002-ui-kit-shadcn-style.md",
     "systems/state.md",
     "systems/persistence.md",
     "systems/networking.md",
