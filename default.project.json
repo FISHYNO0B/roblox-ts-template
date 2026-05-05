@@ -25,6 +25,9 @@
       },
       "TS": {
         "$path": "out/shared"
+      },
+      "VFX": {
+        "$path": "assets/VFX"
       }
     },
     "StarterPlayer": {

@@ -38,8 +38,8 @@ const Story = CreateReactStory(
 					variant={props.controls.variant}
 					size={props.controls.size}
 					disabled={props.controls.disabled}
-					leftIcon={props.controls.leftIcon ? 16545611198 : undefined}
-					rightIcon={props.controls.rightIcon ? 16545611198 : undefined}
+					leftIcon={props.controls.leftIcon ? "settings" : undefined}
+					rightIcon={props.controls.rightIcon ? "settings" : undefined}
 					onClick={() => print("button clicked")}
 				/>
 			</Section>
@@ -67,15 +67,10 @@ const Story = CreateReactStory(
 
 			<Section title="With icons">
 				<Row wrap={true}>
-					<Button text="Settings" variant="solid" leftIcon={16545611198} onClick={() => print("settings")} />
-					<Button text="Buy coins" variant="solid" rightIcon={15416676802} onClick={() => print("buy")} />
-					<Button
-						text="Delete"
-						variant="destructive"
-						leftIcon={16545611198}
-						onClick={() => print("delete")}
-					/>
-					<Button variant="ghost" leftIcon={16545611198} onClick={() => print("ghost icon")} />
+					<Button text="Settings" variant="solid" leftIcon="settings" onClick={() => print("settings")} />
+					<Button text="Buy coins" variant="solid" rightIcon="coin" onClick={() => print("buy")} />
+					<Button text="Delete" variant="destructive" leftIcon="settings" onClick={() => print("delete")} />
+					<Button variant="ghost" leftIcon="settings" onClick={() => print("ghost icon")} />
 				</Row>
 			</Section>
 

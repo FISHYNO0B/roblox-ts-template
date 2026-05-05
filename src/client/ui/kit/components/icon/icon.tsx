@@ -1,9 +1,10 @@
 import React from "@rbxts/react";
+import { Icons, IconKey } from "shared/domain/assets/Icons";
 import { ColorValue, resolveColor } from "../../core/resolve-color";
 import { useTheme } from "../../theme/provider";
 
 export interface IconProps {
-	asset: string | number;
+	icon: IconKey;
 	size?: number;
 	color?: ColorValue;
 	transparency?: number;
@@ -11,12 +12,6 @@ export interface IconProps {
 	anchorPoint?: Vector2;
 	layoutOrder?: number;
 	zIndex?: number;
-}
-
-function resolveAsset(asset: string | number): string {
-	if (typeIs(asset, "number")) return `rbxassetid://${asset}`;
-	if (string.find(asset, "^%d+$")[0] !== undefined) return `rbxassetid://${asset}`;
-	return asset;
 }
 
 export default function Icon(props: IconProps) {
@@ -27,7 +22,7 @@ export default function Icon(props: IconProps) {
 	return (
 		<imagelabel
 			BackgroundTransparency={1}
-			Image={resolveAsset(props.asset)}
+			Image={Icons[props.icon]}
 			ImageColor3={tint}
 			ImageTransparency={props.transparency}
 			Size={new UDim2(0, size, 0, size)}

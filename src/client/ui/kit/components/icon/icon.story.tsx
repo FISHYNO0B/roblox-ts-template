@@ -1,17 +1,14 @@
 import React from "@rbxts/react";
 import ReactRoblox from "@rbxts/react-roblox";
 import { CreateReactStory, EnumList, Slider } from "@rbxts/ui-labs";
+import { IconKey } from "shared/domain/assets/Icons";
 import { Row, Section, StoryShell } from "../../stories/story-shell";
 import Box from "../box/box";
 import Text from "../text/text";
 import Stack from "../stack/stack";
 import Icon from "./icon";
 
-const SAMPLE_ASSETS = [
-	{ id: 16545611198, label: "settings" },
-	{ id: 15416676802, label: "coins" },
-	{ id: 15416675953, label: "gems" },
-];
+const SAMPLE_ICONS: Array<IconKey> = ["settings", "coin", "gem"];
 
 const TINTS = ["foreground", "mutedForeground", "primary", "destructive", "success", "warning", "accent"] as const;
 
@@ -21,7 +18,7 @@ const Story = CreateReactStory(
 		react: React,
 		reactRoblox: ReactRoblox,
 		controls: {
-			asset: EnumList({ settings: 16545611198, coins: 15416676802, gems: 15416675953 }, "coins"),
+			icon: EnumList({ settings: "settings", coin: "coin", gem: "gem" } as const, "coin"),
 			size: Slider(32, 12, 96, 2),
 			color: EnumList(
 				{ foreground: "foreground", primary: "primary", success: "success", destructive: "destructive" },
@@ -30,19 +27,19 @@ const Story = CreateReactStory(
 		},
 	},
 	(props) => (
-		<StoryShell title="Icon" subtitle="Themed ImageLabel — asset id, size, color token">
+		<StoryShell title="Icon" subtitle="Themed ImageLabel — IconKey, size, color token">
 			<Section title="Interactive">
-				<Icon asset={props.controls.asset} size={props.controls.size} color={props.controls.color} />
+				<Icon icon={props.controls.icon} size={props.controls.size} color={props.controls.color} />
 			</Section>
 
 			<Section title="Sample assets">
 				<Row wrap={true}>
-					{SAMPLE_ASSETS.map((s) => (
+					{SAMPLE_ICONS.map((key) => (
 						<Stack direction="vertical" spacing={1} automaticSize={Enum.AutomaticSize.XY}>
 							<Box bg="card" radius="md" padding={3}>
-								<Icon asset={s.id} size={48} color="foreground" />
+								<Icon icon={key} size={48} color="foreground" />
 							</Box>
-							<Text text={s.label} size="xs" color="mutedForeground" align="center" />
+							<Text text={key} size="xs" color="mutedForeground" align="center" />
 						</Stack>
 					))}
 				</Row>
@@ -52,7 +49,7 @@ const Story = CreateReactStory(
 				<Row wrap={true}>
 					{TINTS.map((t) => (
 						<Box bg="card" radius="md" padding={3}>
-							<Icon asset={15416676802} size={32} color={t} />
+							<Icon icon="coin" size={32} color={t} />
 						</Box>
 					))}
 				</Row>

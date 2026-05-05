@@ -3,7 +3,7 @@ import ProfileService from "@rbxts/profileservice";
 import { Profile } from "@rbxts/profileservice/globals";
 import { Players, RunService } from "@rbxts/services";
 import { serverStore } from "server/infra/store";
-import { selectPlayerBalances, selectPlayerData } from "shared/infra/store/selectors/players";
+import { selectPlayerData } from "shared/infra/store/selectors/players";
 import { PlayerData } from "shared/infra/store/slices/players/types";
 import { getDefaultPlayerData } from "shared/infra/store/slices/players/utils";
 import { forEveryPlayer } from "shared/utils/forEveryPlayer";
@@ -50,39 +50,15 @@ export class PlayerDataService implements OnInit {
 		this.profiles.set(player, profile);
 		serverStore.loadPlayerData(userIdStr, profile.Data);
 
-		const unsubscribeLeaderstats = this.createLeaderstats(player);
 		const unsubscribeData = serverStore.subscribe(selectPlayerData(userIdStr), (save) => {
 			if (save) profile.Data = save;
 		});
 
 		profile.ListenToRelease(() => {
 			unsubscribeData();
-			unsubscribeLeaderstats();
 			this.profiles.delete(player);
 			serverStore.closePlayerData(userIdStr);
 			player.Kick();
-		});
-	}
-
-	private createLeaderstats(player: Player) {
-		const userIdStr = tostring(player.UserId);
-
-		const leaderstats = new Instance("Folder");
-		leaderstats.Name = "leaderstats";
-
-		const coins = new Instance("NumberValue");
-		coins.Name = "Coins";
-		coins.Parent = leaderstats;
-
-		const gems = new Instance("NumberValue");
-		gems.Name = "Gems";
-		gems.Parent = leaderstats;
-
-		leaderstats.Parent = player;
-
-		return serverStore.subscribe(selectPlayerBalances(userIdStr), (save) => {
-			coins.Value = save?.Coins ?? 0;
-			gems.Value = save?.Gems ?? 0;
 		});
 	}
 

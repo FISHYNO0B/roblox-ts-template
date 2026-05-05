@@ -39,10 +39,10 @@ const Story = CreateReactStory(
 			<Section title="Different content">
 				<Row>
 					<Tooltip content="Save (Ctrl+S)" delay={0.2}>
-						<Button text="Save" variant="solid" leftIcon={16545611198} />
+						<Button text="Save" variant="solid" leftIcon="settings" />
 					</Tooltip>
 					<Tooltip content="Settings (F2)" delay={0.2}>
-						<Button variant="ghost" leftIcon={16545611198} />
+						<Button variant="ghost" leftIcon="settings" />
 					</Tooltip>
 					<Tooltip
 						content="This is a longer tooltip with more information about what this button does."

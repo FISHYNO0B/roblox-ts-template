@@ -1,6 +1,8 @@
 import { Networking } from "@flamework/networking";
 import { BroadcastAction } from "@rbxts/reflex";
-import { Setting } from "../domain/Settings";
+import { MusicKey } from "shared/domain/assets/Music";
+import { SoundKey } from "shared/domain/assets/Sounds";
+import { Setting, VolumeGroup } from "../domain/Settings";
 
 interface ServerEvents {
 	reflex: {
@@ -8,6 +10,7 @@ interface ServerEvents {
 	};
 
 	toggleSetting: (setting: Setting) => void;
+	setVolume: (group: VolumeGroup, value: number) => void;
 }
 
 interface ServerFunctions {}
@@ -17,6 +20,9 @@ interface ClientEvents {
 		dispatch: (actions: Array<BroadcastAction>) => void;
 		start: () => void;
 	};
+
+	playSoundAt: (key: SoundKey, position: Vector3) => void;
+	playMusic: (key: MusicKey) => void;
 }
 
 interface ClientFunctions {}

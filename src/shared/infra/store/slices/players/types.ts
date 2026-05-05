@@ -1,5 +1,5 @@
 import { Currency } from "shared/domain/Currency";
-import { Setting } from "shared/domain/Settings";
+import { Setting, VolumeGroup } from "shared/domain/Settings";
 
 export interface PlayerData {
 	balance: PlayerBalance;
@@ -8,4 +8,7 @@ export interface PlayerData {
 
 export type PlayerBalance = Record<Currency, number>;
 
-export type PlayerSettings = Record<Setting, boolean>;
+export interface PlayerSettings {
+	toggles: Record<Setting, boolean>;
+	volumes: Record<VolumeGroup, number>;
+}

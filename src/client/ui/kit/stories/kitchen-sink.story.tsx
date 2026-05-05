@@ -289,8 +289,8 @@ function ButtonsDemo() {
 				<Button text="Small" variant="solid" size="sm" />
 				<Button text="Medium" variant="solid" size="md" />
 				<Button text="Large" variant="solid" size="lg" />
-				<Button text="With icon" variant="solid" leftIcon={16545611198} />
-				<Button variant="ghost" leftIcon={16545611198} />
+				<Button text="With icon" variant="solid" leftIcon="settings" />
+				<Button variant="ghost" leftIcon="settings" />
 			</Stack>
 		</Stack>
 	);
@@ -367,19 +367,19 @@ function IconsDemo() {
 			size={new UDim2(1, 0, 0, 0)}
 		>
 			<Box bg="card" radius="md" padding={3}>
-				<Icon asset={16545611198} size={32} color="foreground" />
+				<Icon icon="settings" size={32} color="foreground" />
 			</Box>
 			<Box bg="card" radius="md" padding={3}>
-				<Icon asset={15416676802} size={32} color="warning" />
+				<Icon icon="coin" size={32} color="warning" />
 			</Box>
 			<Box bg="card" radius="md" padding={3}>
-				<Icon asset={15416675953} size={32} color="accent" />
+				<Icon icon="gem" size={32} color="accent" />
 			</Box>
 			<Box bg="card" radius="md" padding={3}>
-				<Icon asset={16545611198} size={32} color="primary" />
+				<Icon icon="settings" size={32} color="primary" />
 			</Box>
 			<Box bg="card" radius="md" padding={3}>
-				<Icon asset={16545611198} size={32} color="destructive" />
+				<Icon icon="settings" size={32} color="destructive" />
 			</Box>
 		</Stack>
 	);
@@ -522,7 +522,7 @@ function TooltipDemo() {
 				<Button text="Save" variant="solid" />
 			</Tooltip>
 			<Tooltip content="Settings" side="right" delay={0.2}>
-				<Button variant="ghost" leftIcon={16545611198} />
+				<Button variant="ghost" leftIcon="settings" />
 			</Tooltip>
 			<Tooltip content="Tooltip on bottom" side="bottom" delay={0.2}>
 				<Button text="Hover me" variant="outline" />

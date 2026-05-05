@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "systems/ui.md",
-                "mode": "preview",
+                "file": "features/_master-plan.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ui"
+              "title": "_master-plan"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "systems/ui.md",
+                "file": "features/_master-plan.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for ui"
+              "title": "Backlinks for _master-plan"
             }
           },
           {
@@ -183,18 +183,33 @@
       "bases:Create new base": false
     }
   },
-  "active": "a18610619e67316a",
+  "active": "c68c7e897b0d8bd4",
   "lastOpenFiles": [
+    "features/done/leaderstats.md",
+    "systems/leaderstats.md",
+    "features/inbox/rollback-pressable-primitive.md",
+    "features/done/vfx-system.md",
+    "systems/vfx.md",
+    "adr/0006-vfx-system.md",
+    "features/active/vfx-system.md",
+    "features/_master-plan.md",
+    "features/done/sound-system.md",
+    "features/_template.md",
+    "features/done/music-system.md",
+    "adr/0005-music-system.md",
+    "systems/music.md",
+    "systems/ui.md",
+    "systems/persistence.md",
+    "adr/0004-pressable-primitive.md",
+    "systems/sound.md",
+    "adr/0004-sound-system.md",
+    "features/active/sound-system.md",
+    "features/inbox/pressable-primitive.md",
+    "features/active/pressable-primitive.md",
     "features/done/ui-kit.md",
     "features/active/ui-kit.md",
     "adr/0002-ui-kit-shadcn-style.md",
     "systems/state.md",
-    "systems/persistence.md",
-    "systems/networking.md",
-    "systems/currency.md",
-    "systems/cmdr.md",
-    "features/README.md",
-    "features/_template.md",
-    "adr/0001-reflex-for-state-with-server-broadcast.md"
+    "systems/networking.md"
   ]
 }

@@ -2,13 +2,18 @@ import { useSelectorCreator } from "@rbxts/react-reflex";
 import React from "@rbxts/react";
 import { Box, Button, Icon, Stack, Text } from "client/ui/kit";
 import { Currency } from "shared/domain/Currency";
+import { IconKey } from "shared/domain/assets/Icons";
 import { selectPlayerBalance } from "shared/infra/store/selectors/players";
-import { IMAGES } from "shared/domain/Gui";
 import { GetStatePlayerId } from "client/ui/utils/GetStatePlayerId";
 
 interface Props {
 	currency: Currency;
 }
+
+const CURRENCY_ICONS: Record<Currency, IconKey> = {
+	Coins: "coin",
+	Gems: "gem",
+};
 
 export default function CurrencyFrame(props: Props) {
 	const balance = useSelectorCreator(selectPlayerBalance, GetStatePlayerId(), props.currency) ?? 0;
@@ -48,7 +53,7 @@ export default function CurrencyFrame(props: Props) {
 						frameSize={new UDim2(1, -44, 1, 0)}
 						layoutOrder={0}
 					/>
-					<Icon asset={IMAGES[props.currency]} size={36} layoutOrder={1} />
+					<Icon icon={CURRENCY_ICONS[props.currency]} size={36} layoutOrder={1} />
 				</Stack>
 			</Stack>
 		</Box>

@@ -1,0 +1,15 @@
+# Sound playback as a Flamework controller, server replication via Networking event
+
+A `SoundController` on the client owns all sound playback. It bootstraps four `SoundGroup` instances (`UI`, `SFX`, `Music`, `Ambience`) under `SoundService` at init and exposes `play(key)`, `playAt(key, position)`, `stop(key)`, `preload()` against the typed `Sounds` registry from [ADR 0003](0003-asset-registry.md). Group volumes are derived from a new `players/<id>/settings.volumes` slice (`master`, `sfx`, `music`, `ambience`, all `0..1`) and updated reactively. Server-triggered SFX use a one-shot Flamework Networking event (`playSoundAt: SoundKey + Vector3`, server → all clients) — never streamed audio bytes, never a Reflex slice.
+
+**Why a controller, not a slice:** sound playback is transient and client-only. Roblox already replicates `Sound` instances when parented under `Workspace`, but that gives every client the same volume/timing and no per-player muting. Routing through a controller keeps client volume settings authoritative on each client and avoids polluting the Reflex store with one-shot events that would replay on rejoin. The volume *settings* belong in the store (they persist), the *plays* don't.
+
+**Why restructure `PlayerSettings`:** the prior shape `Record<Setting, boolean>` couldn't hold the four `number` volume sliders. Splitting into `{ toggles: Record<Setting, boolean>; volumes: Record<VolumeGroup, number> }` keeps the boolean and numeric concerns separate without inventing parallel slices. The dead `"Play Music"` and `"Sound Effects"` boolean toggles were dropped — D5 makes them redundant (mute = volume === 0), and they had no runtime effect anyway. Only `"PvP"` remains in `SETTINGS`.
+
+**Why bootstrap `Music` and `Ambience` groups now:** the music system (Phase 1, #3) lands next and depends on those groups existing with controlled volumes. Bootstrapping all four here means music-system is purely a player/track-router on top of an already-wired SoundGroup — no shared infra to add later.
+
+**Trade-offs:**
+- **Save-shape break.** Existing profiles saved under the old `Record<Setting, boolean>` shape will get the new `{ toggles, volumes }` keys reconciled in by ProfileService, but the orphaned `"Play Music"`/`"Sound Effects"` keys hang around until ProfileService cleanup. Acceptable on a template; flag in the migration notes for any forked game already in production.
+- **Per-key Sound caching.** Calling `play(key)` while the cached sound is still playing restarts it from the start (Roblox `Sound:Play()` semantics). Fine for short SFX/UI clicks; if a use case wants overlapping plays of the same key, switch to a small per-key clone pool then.
+- **`replicate(key, pos)` is unauthenticated broadcast.** Any service can fire any sound at any position. Not a vulnerability inside the codebase, but if user-triggered events ever route into it, gate them at the call site.
+- **No volume curve.** Roblox `SoundGroup.Volume` is linear-ish; we pass slider values straight through (`group * master`). If users complain about the bottom-end being too loud, add a log curve at the controller — settings stay linear.

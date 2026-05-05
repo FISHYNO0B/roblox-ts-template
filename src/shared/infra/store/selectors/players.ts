@@ -3,7 +3,7 @@ import { SharedState } from "../index";
 import { createSelector } from "@rbxts/reflex";
 import { defaultPlayerData } from "../slices/players/utils";
 import { PlayerData } from "../slices/players/types";
-import { Setting } from "shared/domain/Settings";
+import { Setting, VolumeGroup } from "shared/domain/Settings";
 
 export const selectPlayerBalances = (playerId: string) => {
 	return (state: SharedState) => {
@@ -25,7 +25,19 @@ export const selectPlayerSettings = (playerId: string) => {
 
 export const selectPlayerSetting = (playerId: string, setting: Setting) => {
 	return createSelector(selectPlayerSettings(playerId), (settings) => {
-		return settings?.[setting];
+		return settings?.toggles[setting];
+	});
+};
+
+export const selectPlayerVolumes = (playerId: string) => {
+	return createSelector(selectPlayerSettings(playerId), (settings) => {
+		return settings?.volumes;
+	});
+};
+
+export const selectPlayerVolume = (playerId: string, group: VolumeGroup) => {
+	return createSelector(selectPlayerSettings(playerId), (settings) => {
+		return settings?.volumes[group];
 	});
 };
 

@@ -1,10 +1,15 @@
-import { SETTINGS } from "shared/domain/Settings";
+import { DEFAULT_VOLUME, SETTINGS, VOLUME_GROUPS } from "shared/domain/Settings";
 import { PlayerData, PlayerSettings } from "./types";
 
 export function getDefaultPlayerData(): PlayerData {
-	const settings = {} as PlayerSettings;
+	const toggles = {} as PlayerSettings["toggles"];
 	SETTINGS.forEach((setting) => {
-		settings[setting] = false;
+		toggles[setting] = false;
+	});
+
+	const volumes = {} as PlayerSettings["volumes"];
+	VOLUME_GROUPS.forEach((group) => {
+		volumes[group] = DEFAULT_VOLUME;
 	});
 
 	return {
@@ -12,7 +17,10 @@ export function getDefaultPlayerData(): PlayerData {
 			Coins: 0,
 			Gems: 0,
 		},
-		settings,
+		settings: {
+			toggles,
+			volumes,
+		},
 	};
 }
 

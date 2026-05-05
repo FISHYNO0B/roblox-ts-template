@@ -1,4 +1,5 @@
 import React from "@rbxts/react";
+import { IconKey } from "shared/domain/assets/Icons";
 import { ColorToken } from "../../core/resolve-color";
 import { usePressScale } from "../../motion/use-press-scale";
 import { useTheme } from "../../theme/provider";
@@ -47,8 +48,8 @@ export interface ButtonProps extends React.PropsWithChildren {
 	size?: ButtonSize;
 	disabled?: boolean;
 	fullWidth?: boolean;
-	leftIcon?: string | number;
-	rightIcon?: string | number;
+	leftIcon?: IconKey;
+	rightIcon?: IconKey;
 
 	position?: UDim2;
 	anchorPoint?: Vector2;
@@ -122,7 +123,7 @@ export default function Button(props: ButtonProps) {
 			/>
 
 			{props.leftIcon !== undefined && (
-				<Icon asset={props.leftIcon} size={s.iconSize} color={v.fg} layoutOrder={0} />
+				<Icon icon={props.leftIcon} size={s.iconSize} color={v.fg} layoutOrder={0} />
 			)}
 			{props.text !== undefined && (
 				<textlabel
@@ -139,7 +140,7 @@ export default function Button(props: ButtonProps) {
 			)}
 			{props.children}
 			{props.rightIcon !== undefined && (
-				<Icon asset={props.rightIcon} size={s.iconSize} color={v.fg} layoutOrder={2} />
+				<Icon icon={props.rightIcon} size={s.iconSize} color={v.fg} layoutOrder={2} />
 			)}
 		</textbutton>
 	);
