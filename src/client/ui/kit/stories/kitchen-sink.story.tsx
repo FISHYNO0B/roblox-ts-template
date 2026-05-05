@@ -1,15 +1,23 @@
-import React from "@rbxts/react";
+import React, { useState } from "@rbxts/react";
 import ReactRoblox from "@rbxts/react-roblox";
+import Avatar from "../components/avatar/avatar";
 import Badge from "../components/badge/badge";
 import Box from "../components/box/box";
 import Button from "../components/button/button";
 import Card, { CardDescription, CardFooter, CardHeader, CardTitle } from "../components/card/card";
+import Checkbox from "../components/checkbox/checkbox";
 import Heading from "../components/heading/heading";
 import Icon from "../components/icon/icon";
+import ProgressBar from "../components/progress-bar/progress-bar";
 import ScrollArea from "../components/scroll-area/scroll-area";
 import Separator from "../components/separator/separator";
+import Skeleton from "../components/skeleton/skeleton";
+import Slider from "../components/slider/slider";
 import Stack from "../components/stack/stack";
+import Tabs, { TabsContent, TabsList, TabsTrigger } from "../components/tabs/tabs";
 import Text from "../components/text/text";
+import TextInput from "../components/text-input/text-input";
+import Toggle from "../components/toggle/toggle";
 import { palette } from "../theme/colors";
 import { gradients, GradientToken } from "../theme/gradients";
 import { ThemeProvider, useTheme } from "../theme/provider";
@@ -392,6 +400,119 @@ function HeadingsDemo() {
 	);
 }
 
+function FormControlsDemo() {
+	const [toggleA, setToggleA] = useState(true);
+	const [toggleB, setToggleB] = useState(false);
+	const [check, setCheck] = useState(true);
+	const [slider, setSlider] = useState(35);
+	const [text, setText] = useState("");
+	return (
+		<Stack
+			direction="horizontal"
+			spacing={5}
+			wrap={true}
+			automaticSize={Enum.AutomaticSize.Y}
+			size={new UDim2(1, 0, 0, 0)}
+		>
+			<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y} size={new UDim2(0, 220, 0, 0)}>
+				<Text text="Toggles" size="sm" color="mutedForeground" />
+				<Stack direction="horizontal" spacing={3} align="center" automaticSize={Enum.AutomaticSize.Y}>
+					<Toggle checked={toggleA} onChange={setToggleA} />
+					<Toggle checked={toggleB} onChange={setToggleB} />
+					<Toggle checked={true} disabled={true} />
+				</Stack>
+			</Stack>
+			<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y} size={new UDim2(0, 220, 0, 0)}>
+				<Text text="Checkboxes" size="sm" color="mutedForeground" />
+				<Checkbox checked={check} onChange={setCheck} label="Accept terms" />
+			</Stack>
+			<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y} size={new UDim2(0, 280, 0, 0)}>
+				<Text text="Slider" size="sm" color="mutedForeground" />
+				<Slider value={slider} onChange={setSlider} min={0} max={100} />
+				<Text text={`Value: ${slider}`} size="xs" color="mutedForeground" />
+			</Stack>
+			<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y} size={new UDim2(0, 280, 0, 0)}>
+				<Text text="TextInput" size="sm" color="mutedForeground" />
+				<TextInput value={text} onChange={setText} placeholder="Type something..." />
+			</Stack>
+		</Stack>
+	);
+}
+
+function DisplayDemo() {
+	return (
+		<Stack direction="vertical" spacing={4} automaticSize={Enum.AutomaticSize.Y}>
+			<Stack direction="horizontal" spacing={2} align="end" automaticSize={Enum.AutomaticSize.Y}>
+				<Avatar userId={1} fallback="Roblox" size="xs" />
+				<Avatar userId={156} fallback="Builder" size="sm" status="online" />
+				<Avatar userId={261} fallback="Shed" size="md" status="away" />
+				<Avatar userId={469} fallback="P" size="lg" status="busy" />
+				<Avatar fallback="Aria Stark" size="xl" status="offline" />
+			</Stack>
+			<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y}>
+				<Text text="Determinate progress (40%)" size="sm" color="mutedForeground" />
+				<ProgressBar value={0.4} max={1} />
+				<Text text="Success" size="sm" color="mutedForeground" />
+				<ProgressBar value={0.7} max={1} variant="success" />
+				<Text text="Indeterminate" size="sm" color="mutedForeground" />
+				<ProgressBar indeterminate={true} variant="accent" />
+			</Stack>
+		</Stack>
+	);
+}
+
+function TabsDemo() {
+	const [tab, setTab] = useState("pills");
+	return (
+		<Tabs value={tab} onChange={setTab} variant="pills" size="md">
+			<TabsList>
+				<TabsTrigger value="pills" text="Pills" layoutOrder={0} />
+				<TabsTrigger value="underline" text="Underline" layoutOrder={1} />
+				<TabsTrigger value="disabled" text="Disabled" disabled={true} layoutOrder={2} />
+			</TabsList>
+			<TabsContent value="pills">
+				<Box bg="card" radius="md" padding={4} automaticSize={Enum.AutomaticSize.Y}>
+					<Text text="Pills variant — solid background on active tab." color="mutedForeground" />
+				</Box>
+			</TabsContent>
+			<TabsContent value="underline">
+				<Box bg="card" radius="md" padding={4} automaticSize={Enum.AutomaticSize.Y}>
+					<Text text="Underline variant — primary line under active tab." color="mutedForeground" />
+				</Box>
+			</TabsContent>
+		</Tabs>
+	);
+}
+
+function SkeletonsDemo() {
+	return (
+		<Stack
+			direction="horizontal"
+			spacing={3}
+			wrap={true}
+			automaticSize={Enum.AutomaticSize.Y}
+			size={new UDim2(1, 0, 0, 0)}
+		>
+			<Box bg="card" radius="md" padding={3} size={new UDim2(0, 240, 0, 0)} automaticSize={Enum.AutomaticSize.Y}>
+				<Stack direction="horizontal" spacing={3} align="center" automaticSize={Enum.AutomaticSize.Y}>
+					<Skeleton shape="circle" width={new UDim(0, 48)} height={new UDim(0, 48)} />
+					<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y} layoutOrder={1}>
+						<Skeleton shape="text" width={new UDim(0, 140)} height={new UDim(0, 14)} />
+						<Skeleton shape="text" width={new UDim(0, 90)} height={new UDim(0, 12)} />
+					</Stack>
+				</Stack>
+			</Box>
+			<Box bg="card" radius="md" padding={3} size={new UDim2(0, 280, 0, 0)} automaticSize={Enum.AutomaticSize.Y}>
+				<Stack direction="vertical" spacing={2} automaticSize={Enum.AutomaticSize.Y}>
+					<Skeleton shape="rect" width={new UDim(1, 0)} height={new UDim(0, 80)} />
+					<Skeleton shape="text" width={new UDim(1, 0)} height={new UDim(0, 16)} />
+					<Skeleton shape="text" width={new UDim(0.6, 0)} height={new UDim(0, 14)} />
+				</Stack>
+			</Box>
+		</Stack>
+	);
+}
+
 function KitchenSink() {
 	return (
 		<ScrollArea size={new UDim2(1, 0, 1, 0)} padding={6} spacing={5}>
@@ -413,19 +534,35 @@ function KitchenSink() {
 				<CardsDemo />
 			</Section>
 
-			<Section title="Icons" layoutOrder={5}>
+			<Section title="Form controls" layoutOrder={5}>
+				<FormControlsDemo />
+			</Section>
+
+			<Section title="Display (Avatar, ProgressBar)" layoutOrder={6}>
+				<DisplayDemo />
+			</Section>
+
+			<Section title="Tabs" layoutOrder={7}>
+				<TabsDemo />
+			</Section>
+
+			<Section title="Skeleton (loading)" layoutOrder={8}>
+				<SkeletonsDemo />
+			</Section>
+
+			<Section title="Icons" layoutOrder={9}>
 				<IconsDemo />
 			</Section>
 
-			<Section title="Separators" layoutOrder={6}>
+			<Section title="Separators" layoutOrder={10}>
 				<SeparatorsDemo />
 			</Section>
 
-			<Section title="Semantic tokens" layoutOrder={7}>
+			<Section title="Semantic tokens" layoutOrder={11}>
 				<SemanticTokens />
 			</Section>
 
-			<Section title="Palette" layoutOrder={8}>
+			<Section title="Palette" layoutOrder={12}>
 				<PaletteRow name="slate" scale={palette.slate} layoutOrder={0} />
 				<PaletteRow name="blue" scale={palette.blue} layoutOrder={1} />
 				<PaletteRow name="violet" scale={palette.violet} layoutOrder={2} />
@@ -434,19 +571,19 @@ function KitchenSink() {
 				<PaletteRow name="amber" scale={palette.amber} layoutOrder={5} />
 			</Section>
 
-			<Section title="Spacing" layoutOrder={9}>
+			<Section title="Spacing" layoutOrder={13}>
 				<SpacingScale />
 			</Section>
 
-			<Section title="Radius" layoutOrder={10}>
+			<Section title="Radius" layoutOrder={14}>
 				<RadiusScale />
 			</Section>
 
-			<Section title="Typography" layoutOrder={11}>
+			<Section title="Typography" layoutOrder={15}>
 				<TypographyScale />
 			</Section>
 
-			<Section title="Gradients" layoutOrder={12}>
+			<Section title="Gradients" layoutOrder={16}>
 				<GradientGrid />
 			</Section>
 		</ScrollArea>
@@ -454,7 +591,7 @@ function KitchenSink() {
 }
 
 const Story = {
-	summary: "Kitchen sink — every theme token and Wave 2 component on one canvas",
+	summary: "Kitchen sink — every theme token and component on one canvas",
 	react: React,
 	reactRoblox: ReactRoblox,
 	story: () => (
