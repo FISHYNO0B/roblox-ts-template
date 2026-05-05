@@ -11,10 +11,14 @@
             "id": "c68c7e897b0d8bd4",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "systems/ui.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ui"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "systems/ui.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for ui"
             }
           },
           {
@@ -108,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "systems/ui.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from ui"
             }
           },
           {
@@ -150,12 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "systems/ui.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of ui"
             }
           }
         ]
@@ -177,5 +184,14 @@
     }
   },
   "active": "c68c7e897b0d8bd4",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "systems/state.md",
+    "systems/persistence.md",
+    "systems/networking.md",
+    "systems/currency.md",
+    "systems/cmdr.md",
+    "features/README.md",
+    "features/_template.md",
+    "adr/0001-reflex-for-state-with-server-broadcast.md"
+  ]
 }

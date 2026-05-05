@@ -7,6 +7,7 @@ Open this folder in Obsidian. Everything here is committed to git so it travels 
 | Folder / file | Purpose |
 |---|---|
 | [overview.md](overview.md) | What this game (or template) is right now. The 30-second pitch. |
+| [game/](game/) | Game-specific design docs (design, economy, progression, balancing). Placeholder until forked — see [game/README.md](game/README.md). |
 | [../CONTEXT.md](../CONTEXT.md) | Domain glossary (lives at repo root — that's what `grill-with-docs` expects). Read before proposing terminology. |
 | [systems/](systems/) | One file per system in the codebase (currency, persistence, UI, …). |
 | [adr/](adr/) | Architecture Decision Records. Numbered sequentially. |

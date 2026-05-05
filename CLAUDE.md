@@ -92,6 +92,7 @@ The user picks the level. If a task is mis-leveled (e.g. "quick fix" but actuall
 
 - `../CONTEXT.md` (at repo root) — domain glossary. Updated by `grill-with-docs`. Read this before proposing terminology.
 - `overview.md` — what this game is right now
+- `game/` — game-specific design docs (design, economy, progression, balancing). Placeholder until forked.
 - `systems/` — one file per system in the codebase
 - `adr/` — architecture decision records
 - `features/inbox|active|done/` — the three-stage feature flow
