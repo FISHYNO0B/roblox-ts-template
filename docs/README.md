@@ -12,7 +12,6 @@ Open this folder in Obsidian. Everything here is committed to git so it travels 
 | [systems/](systems/) | One file per system in the codebase (currency, persistence, UI, …). |
 | [adr/](adr/) | Architecture Decision Records. Numbered sequentially. |
 | [features/](features/) | The idea → spec → done workflow. See [features/README.md](features/README.md). |
-| [journal/](journal/) | Free-form daily notes. Date-named (`2026-05-04.md`). |
 
 ## Workflow
 

@@ -96,7 +96,6 @@ The user picks the level. If a task is mis-leveled (e.g. "quick fix" but actuall
 - `systems/` — one file per system in the codebase
 - `adr/` — architecture decision records
 - `features/inbox|active|done/` — the three-stage feature flow
-- `journal/` — free-form daily notes
 
 **I read the vault for context before non-trivial work.** I write to it when:
 - A feature finishes (move from `active/` to `done/`, add a one-paragraph retro)
