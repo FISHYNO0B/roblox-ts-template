@@ -7,3 +7,8 @@ flamework.build
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# Obsidian local UI state (layout, graph zoom/pan) — churns every session
+docs/.obsidian/workspace.json
+docs/.obsidian/workspace-mobile.json
+docs/.obsidian/graph.json
